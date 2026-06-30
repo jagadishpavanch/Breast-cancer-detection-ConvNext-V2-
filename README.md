@@ -1,4 +1,4 @@
-<img width="1800" height="362" alt="grad cam" src="https://github.com/user-attachments/assets/f0862733-c431-4873-b46a-7aa55ee6562e" /><img width="1800" height="362" alt="grad cam" src="https://github.com/user-attachments/assets/4e86d06f-4b76-4880-b771-fb7163b84d60" /># Prediction of Metastasis in Breast Cancer Using Deep Learning
+# Breast Cancer Metastasis Detection using ConvNeXt V2 and Custom MLP Head
 
 > Patch-level lymph node metastasis detection on the PatchCamelyon (PCam) dataset using modern convolutional architectures.
 
