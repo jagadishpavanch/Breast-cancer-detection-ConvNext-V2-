@@ -1,14 +1,24 @@
-# Prediction of Metastasis in Breast Cancer Using Deep Learning
+<img width="1800" height="362" alt="grad cam" src="https://github.com/user-attachments/assets/f0862733-c431-4873-b46a-7aa55ee6562e" /><img width="1800" height="362" alt="grad cam" src="https://github.com/user-attachments/assets/4e86d06f-4b76-4880-b771-fb7163b84d60" /># Prediction of Metastasis in Breast Cancer Using Deep Learning
 
 > Patch-level lymph node metastasis detection on the PatchCamelyon (PCam) dataset using modern convolutional architectures.
 
-![alt text](2_curves_highlighted.png)
+<img width="5400" height="2400" alt="2_curves_highlighted" src="https://github.com/user-attachments/assets/9cd00818-f725-4682-881e-76eb560c5fbf" />
+
 
 ## Overview
 
-This project explores automated detection of breast cancer metastasis from histopathology image patches. The work compares three attention-enhanced CNN baselines—**ResNet-50 + CBAM**, **DenseNet-121 + CBAM**, and **EfficientNet-B3 + CBAM**—against a modern convolutional backbone, **ConvNeXt V2**.
+## Overview
 
-The goal is not only to improve classification performance, but also to reduce **false negatives**, which are especially critical in medical screening. According to the paper, the proposed ConvNeXt V2 model achieved the best overall performance on the PCam test split with **AUC = 0.9710**, **F1 = 0.9116**, **accuracy = 0.9127**, and approximately **47% fewer false negatives** compared to the strongest baseline.
+Breast cancer is one of the leading causes of cancer-related mortality worldwide, making early and accurate detection of lymph node metastasis critical for effective treatment planning. This project presents a deep learning framework for automated metastasis detection from histopathology image patches using the PatchCamelyon (PCam) dataset.
+
+The proposed approach employs a **ConvNeXt V2 backbone** combined with a **custom multi-layer classification head** designed for binary metastasis classification. To evaluate its effectiveness, the model was benchmarked against three strong attention-enhanced CNN baselines: **ResNet-50 + CBAM**, **DenseNet-121 + CBAM**, and **EfficientNet-B3 + CBAM**.
+
+The primary objective was to maximize diagnostic performance while minimizing **false-negative predictions**, a critical requirement in medical screening systems where missed cancer cases can have serious clinical consequences.
+
+
+Additionally, Grad-CAM visualizations demonstrated that the model focuses more effectively on malignant cellular regions while suppressing irrelevant background tissue, improving both performance and interpretability.
+
+This work demonstrates that modern convolutional architectures with care
 
 ## Why this project matters
 
@@ -16,11 +26,52 @@ Breast cancer metastasis detection is a high-impact medical imaging task. Missin
 
 ## Key Contributions
 
-* Benchmarks strong CNN baselines with **CBAM** attention.
-* Uses **ConvNeXt V2** as a modern fully convolutional backbone.
-* Applies **Grad-CAM** for interpretability and visual validation.
-* Focuses on **AUC, sensitivity, and false-negative reduction** rather than accuracy alone.
-* Shows that ConvNeXt V2 better highlights malignant cell clusters with less background noise.
+## Proposed Architecture
+
+The proposed framework uses ConvNeXt V2 as a feature extractor and a custom-designed classification head for binary lymph node metastasis detection.
+
+### ConvNeXt V2 Backbone
+
+The backbone leverages:
+
+- Large-kernel depthwise convolutions
+- Global Response Normalization (GRN)
+- Modern convolutional design principles
+- Strong feature representation learning
+
+### Custom Classification Head
+
+Instead of using the default ConvNeXt V2 classifier, a custom Multi-Layer Perceptron (MLP) head was designed:
+
+Input Features (1024)
+        ↓
+Global Average Pooling
+        ↓
+Linear (1024 → 512)
+        ↓
+LayerNorm
+        ↓
+Dropout (p=0.3)
+        ↓
+Linear (512 → 256)
+        ↓
+GELU Activation
+        ↓
+Dropout (p=0.5)
+        ↓
+Linear (256 → 1)
+        ↓
+Sigmoid
+
+
+## Key Contributions
+
+- Developed a ConvNeXt V2 based metastasis detection framework.
+- Designed a custom MLP classification head for binary classification.
+- Benchmarked against ResNet-50 + CBAM, DenseNet-121 + CBAM, and EfficientNet-B3 + CBAM.
+- Achieved 0.9710 ROC-AUC on the PCam dataset.
+- Reduced false negatives by approximately 47%.
+- Applied Grad-CAM for model interpretability.
 
 ## Dataset
 
@@ -36,13 +87,15 @@ The project uses the **PatchCamelyon (PCam)** dataset:
 
 ConvNeXt V2 with custom head:
 
-![alt text](<conv2 .drawio.png>)
+<img width="759" height="481" alt="conv2  drawio" src="https://github.com/user-attachments/assets/f2909a80-c30b-4184-959f-b698febb973b" />
 
-![alt text](<convnext v2.jpg>)
+<img width="283" height="620" alt="convnext v2" src="https://github.com/user-attachments/assets/c7a8e81a-65d3-4a18-9d40-25cd2ea02e01" />
+
 
 ResNet-50 + CBAM:
 
-![alt text](<resnet50 with cbam.drawio.png>)
+<img width="729" height="491" alt="resnet50 with cbam drawio" src="https://github.com/user-attachments/assets/3b35fc9e-dbc4-4b8e-81a1-1f295ea8d3de" />
+
 
 ### 1. Preprocessing
 
@@ -102,6 +155,8 @@ Performance was measured using:
 Grad-CAM was used to inspect what regions the models focused on during prediction.
 
 ## Results
+<img width="1800" height="1500" alt="CM_ConvNeXt-V2" src="https://github.com/user-attachments/assets/55a4dad7-b7f2-4369-bd12-e3156464fd98" />
+
 
 ### Test Set Performance
 
@@ -119,31 +174,60 @@ Grad-CAM was used to inspect what regions the models focused on during predictio
 * **Best sensitivity:** ConvNeXt V2 (0.9008)
 * **False-negative reduction:** about **47%** compared with ResNet-50 + CBAM
 
+
 ### Interpretation
 
 Grad-CAM visualizations show that ConvNeXt V2 produces more compact, nucleus-centered activations, while attention-based baselines often spread attention into background or stromal areas. This aligns with the quantitative improvement in false-negative reduction.
 
 
+<img width="1638" height="323" alt="gradcamm" src="https://github.com/user-attachments/assets/1a5751c5-609e-4a0f-b7e4-e3656373938b" />
 
-![alt text](<grad cam.png>)
-![alt text](gradcamm.png)
+
+
+
+
 ## Repository Structure
 
 ```text
 .
-├── data/                 # Dataset or data-loading scripts
-├── models/               # CNN / ConvNeXt V2 model definitions
-├── training/             # Training loops and loss functions
-├── utils/                # Metrics, augmentation, helper functions
-├── notebooks/            # Experiments and analysis
-├── figures/              # ROC, PR curves, Grad-CAM images
-├── results/              # Saved checkpoints and evaluation outputs
-└── README.md
+├── README.md
+├── requirements.txt
+├── .gitignore
+│
+├── comparison/
+│   ├── 2_curves_highlighted (1).png
+│   └── comparision alll.ipynb
+│
+├── convnext_v2_baseline/
+│   ├── convnextv2.ipynb
+│   └── results/
+│       ├── confusion_matrix.png
+│       ├── pr_curve.png
+│       ├── roc_curve.png
+│       └── training_loss.png
+│
+├── convnext_v2_proposed/
+│   ├── convnextv2.ipynb
+│   └── results/
+│
+├── densenet121_attention/
+│   ├── densenet121.ipynb
+│   ├── optimsethresold.ipynb
+│   └── results/
+│
+├── efficientnet_b3_attention/
+│   ├── efficientnetb3.ipynb
+│   └── results/
+│
+└── resnet50_attention/
+    ├── resnet50 with cbam.ipynb
+    ├── test_predictions.csv
+    └── results/ '''
+  
 ```
 
-## Visualizations
 
-The paper includes:
+## Visualizations
 
 * ROC curves
 * Precision-Recall curves
@@ -168,11 +252,11 @@ Possible next steps include:
 * Lightweight hybrid models combining convolution and attention
 * Uncertainty-aware prediction for safer clinical deployment
 
-## Citation / Paper Summary
+## Citation 
 
 This repository is based on the study **“Prediction of Metastasis in Breast Cancer Using Deep Learning”**. The paper reports that ConvNeXt V2 with Custom head outperformed CBAM-augmented ResNet-50, DenseNet-121, and EfficientNet-B3 on the PCam dataset, achieving the highest AUC and substantially reducing false negatives.
 
 ## License
 
-Add the license that matches your repository policy.
+
 
