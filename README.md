@@ -258,5 +258,4 @@ This repository is based on the study **“Prediction of Metastasis in Breast Ca
 
 ## License
 
-
-
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
